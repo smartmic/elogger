@@ -6,6 +6,7 @@
 #include <ctime>
 
 #define N 17
+#define EXIT_SUCCESS 0
 
 using namespace std;
  
@@ -44,13 +45,15 @@ int Measurement::firstStamp(char* buffer) {
     buffer += offset;
     while (offset <= 7) {
             datecode = static_cast<int>(*buffer);
-            //cout << " " << static_cast<int>(*buffer);
-            /* if (offset == 3) {
+            /*
+            cout << " " << static_cast<int>(*buffer);
+            if (offset == 3) {
                 strcpy(timestamp, NumberToString(datecode[offset-3]).c_str());
             }
             else {
                 strcat(timestamp, NumberToString(datecode[offset-3]).c_str());
-            } */
+            } 
+            */
             switch (offset) {
                 case 3:
                     ts.tm_mon = datecode - 1;
@@ -68,6 +71,8 @@ int Measurement::firstStamp(char* buffer) {
          }
     t = mktime(&ts);
     strftime(timestamp, N, "%Y-%m-%d %H:%M", &ts);
+    cout << timestamp;
+
     return EXIT_SUCCESS;
 }
 
