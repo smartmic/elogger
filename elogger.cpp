@@ -30,6 +30,7 @@ class Measurement {
         Measurement();
         ~Measurement();
         int firstStamp(char* buffer);
+        float getVoltage(char* buffer, int pos);
         void saveEntry(void);
 };
 
@@ -74,6 +75,10 @@ int Measurement::firstStamp(char* buffer) {
     cout << timestamp;
 
     return EXIT_SUCCESS;
+}
+
+float Measurement::getVoltage(char* buffer, int pos) {
+    return 1.0;
 }
 
 void Measurement::saveEntry(void) {
