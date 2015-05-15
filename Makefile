@@ -1,5 +1,9 @@
 all: elogger.o
 	g++ -O -o elogger elogger.o
 
-elogger.o: elogger.cpp
-	gcc -Wall -c elogger.cpp
+.cpp.o:
+	g++ -c -Wall $<
+
+clean:
+	rm -f *.o
+	rm -f elogger

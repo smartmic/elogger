@@ -30,7 +30,8 @@ class Measurement {
         Measurement();
         ~Measurement();
         int firstStamp(char* buffer);
-        float getVoltage(char* buffer, int pos);
+        int getVoltage(char* buffer);
+        int getCurrent(char* buffer);
         void saveEntry(void);
 };
 
@@ -46,8 +47,9 @@ int Measurement::firstStamp(char* buffer) {
     buffer += offset;
     while (offset <= 7) {
             datecode = static_cast<int>(*buffer);
+            
+            //cout << " " << hex << static_cast<int>(*buffer);
             /*
-            cout << " " << static_cast<int>(*buffer);
             if (offset == 3) {
                 strcpy(timestamp, NumberToString(datecode[offset-3]).c_str());
             }
@@ -73,12 +75,35 @@ int Measurement::firstStamp(char* buffer) {
     t = mktime(&ts);
     strftime(timestamp, N, "%Y-%m-%d %H:%M", &ts);
     cout << timestamp;
+    getVoltage(buffer);
+
 
     return EXIT_SUCCESS;
 }
 
-float Measurement::getVoltage(char* buffer, int pos) {
-    return 1.0;
+int Measurement::getVoltage(char* buffer) {
+    int i;
+    unsigned int voltcode[2] = {0,0};
+    for (i=0;i<=1;i++) {
+        voltcode[i] = static_cast<int>(*buffer);
+        buffer++;
+    }
+    unsigned int volt = ( voltcode[0] << 8 | voltcode[1] );
+    cout << " " << (float)volt/10 ; 
+    getCurrent(buffer);
+    return EXIT_SUCCESS;
+}
+
+int Measurement::getCurrent(char* buffer) {
+    int i;
+    unsigned int currcode[2] = {0,0};
+    for (i=0;i<=1;i++) {
+        currcode[i] = static_cast<int>(*buffer);
+        buffer++;
+    }
+    unsigned int curr = ( currcode[0] << 8 | currcode[1] );
+    cout << " " << (float)curr/1000;
+    return EXIT_SUCCESS;
 }
 
 void Measurement::saveEntry(void) {
@@ -107,6 +132,7 @@ int main(int argc, char* argv[]) {
 
         Measurement entry0;
         entry0.firstStamp(buffer);
+        delete []buffer;
     }
     else
         cout << "inputfile does not exist!" << endl;
