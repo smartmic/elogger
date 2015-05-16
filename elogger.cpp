@@ -2,7 +2,6 @@
 #include <fstream>
 #include <iostream>
 #include <cstring>
-#include <stdlib.h>
 #include <ctime>
 
 #define N 18
@@ -61,7 +60,7 @@ int Measurement::firstStamp(void) {
          }
     mktime(&ts);
     getTimestamp();
-    return EXIT_SUCCESS;
+    return 0;
 }
 
 int Measurement::getTimestamp(void) {
@@ -69,16 +68,16 @@ int Measurement::getTimestamp(void) {
         cout << timestamp;
     else {
         cerr << "strftime failed." <<endl;
-        exit (EXIT_FAILURE);
+        return 1;
     }
-    return EXIT_SUCCESS;
+    return 0;
 }
 
 int Measurement::addTimedelta(int deltasec) {
     time_t next = mktime(&ts) + deltasec;
     ts = *localtime(&next);
     
-    return EXIT_SUCCESS;
+    return 0;
 }
 
 int Measurement::getVoltage(void) {
@@ -95,9 +94,9 @@ int Measurement::getVoltage(void) {
         cout << "\t" << voltage; 
     else {
         cerr << "\ninvalid voltage at " << hex << &buffer << endl;
-        exit (EXIT_FAILURE);
+        return 1;
     }
-    return EXIT_SUCCESS;
+    return 0;
 }
 
 int Measurement::getCurrent(void) {
@@ -114,9 +113,9 @@ int Measurement::getCurrent(void) {
         cout << "\t" << current;
     else {
         cerr << "\ninvalid current at " << hex << &buffer << endl;
-        exit (EXIT_FAILURE);
+        return 1;
     }
-    return EXIT_SUCCESS;
+    return 0;
 }
 
 int Measurement::getPF(void) {
@@ -128,9 +127,9 @@ int Measurement::getPF(void) {
         cout << "\t" << cosphi;
     else {
         cerr << "\ninvalid power factor at " << hex << &buffer << endl;
-        exit (EXIT_FAILURE);
+        return 1;
     }
-    return EXIT_SUCCESS;
+    return 0;
 }
 
 void Measurement::saveEntry(void) {
@@ -149,11 +148,11 @@ int Measurement::getBuffer(char* filename) {
         inputfile.seekg (0, ios::beg);
         inputfile.read (buffer, size);
         inputfile.close();
-        return EXIT_SUCCESS;
+        return 0;
     }
     else {
         cerr << "reading file failed." <<endl;
-        exit (EXIT_FAILURE);
+        return 1;
     }
 }
 
@@ -181,6 +180,6 @@ int main(int argc, char* argv[]) {
         entry0.getTimestamp();
         i++;
     }
-return EXIT_SUCCESS;
+return 0;
 }
 
