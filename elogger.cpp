@@ -23,8 +23,7 @@ template <class T>
 class Measurement {
     private:
         static char* buffer;
-        time_t t;
-        struct tm ts;
+        static struct tm ts;
         char timestamp[N];
         float voltage;
         float current;
@@ -34,6 +33,8 @@ class Measurement {
         ~Measurement();
         int getBuffer(char* filename);
         int firstStamp(void);
+        int getTimestamp(void);
+        int addTimedelta(int deltasec);
         int getVoltage(void);
         int getCurrent(void);
         int getPF(void);
@@ -77,13 +78,25 @@ int Measurement::firstStamp(void) {
             buffer++;
             offset++;
          }
-    t = mktime(&ts);
+    mktime(&ts);
+    getTimestamp();
+    return EXIT_SUCCESS;
+}
+
+int Measurement::getTimestamp(void) {
     if (strftime(timestamp, sizeof(timestamp)-1, "%Y-%m-%d %H:%M", &ts) > 0)
         cout << timestamp;
     else {
         cerr << "strftime failed." <<endl;
         exit (EXIT_FAILURE);
     }
+    return EXIT_SUCCESS;
+}
+
+int Measurement::addTimedelta(int deltasec) {
+    time_t next = mktime(&ts) + deltasec;
+    ts = *localtime(&next);
+    
     return EXIT_SUCCESS;
 }
 
@@ -98,7 +111,7 @@ int Measurement::getVoltage(void) {
     voltage = (float)volt/10;
 
     if (voltage > 108.0 && voltage < 252.0) 
-        cout << " " << voltage; 
+        cout << "\t" << voltage; 
     else {
         cerr << "\ninvalid voltage at " << hex << &buffer << endl;
         exit (EXIT_FAILURE);
@@ -117,7 +130,7 @@ int Measurement::getCurrent(void) {
     current = (float)curr/1000; 
     
     if (current >= 0.0)
-        cout << " " << current;
+        cout << "\t" << current;
     else {
         cerr << "\ninvalid current at " << hex << &buffer << endl;
         exit (EXIT_FAILURE);
@@ -131,7 +144,7 @@ int Measurement::getPF(void) {
     buffer++;
     cosphi = (float)pf/100;
     if (cosphi >= 0.0 && cosphi <= 1.0)
-        cout << " " << cosphi;
+        cout << "\t" << cosphi;
     else {
         cerr << "\ninvalid power factor at " << hex << &buffer << endl;
         exit (EXIT_FAILURE);
@@ -164,6 +177,7 @@ int Measurement::getBuffer(char* filename) {
 }
 
 char* Measurement::buffer; 
+struct tm Measurement::ts;
 
 int main(int argc, char* argv[]) {
     
@@ -175,10 +189,17 @@ int main(int argc, char* argv[]) {
     Measurement entry0;
     entry0.getBuffer(*filename);
     entry0.firstStamp();
-    entry0.getVoltage();
-    entry0.getCurrent();
-    entry0.getPF();
 
-    return EXIT_SUCCESS;
+    int i = 0;
+    while (i < 20) {
+        entry0.getVoltage();
+        entry0.getCurrent();
+        entry0.getPF();
+        cout << "\n";
+        entry0.addTimedelta(60);
+        entry0.getTimestamp();
+        i++;
+    }
+return EXIT_SUCCESS;
 }
 
