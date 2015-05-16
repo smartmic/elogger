@@ -1,7 +1,6 @@
 // elogger.cpp
 #include <fstream>
 #include <iostream>
-#include <sstream>
 #include <cstring>
 #include <stdlib.h>
 #include <ctime>
@@ -9,16 +8,6 @@
 #define N 18
 
 using namespace std;
- 
-template <class T>
-    string NumberToString ( T Number )
-{
-    ostringstream ss;
-    ss << Number;
-    return ss.str();
-}
-
-
 
 class Measurement {
     private:
@@ -55,14 +44,6 @@ int Measurement::firstStamp(void) {
     while (offset <= 7) {
             datecode = static_cast<int>(*buffer);
             
-            /*
-            if (offset == 3) {
-                strcpy(timestamp, NumberToString(datecode[offset-3]).c_str());
-            }
-            else {
-                strcat(timestamp, NumberToString(datecode[offset-3]).c_str());
-            } 
-            */
             switch (offset) {
                 case 3:
                     ts.tm_mon = datecode - 1;
