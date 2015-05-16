@@ -5,8 +5,9 @@
 #include <cstring>
 #include <ctime>
 
-#define N 17
+#define N 18
 #define EXIT_SUCCESS 0
+#define EXIT_FAILURE 1
 
 using namespace std;
  
@@ -32,6 +33,7 @@ class Measurement {
         int firstStamp(char* buffer);
         int getVoltage(char* buffer);
         int getCurrent(char* buffer);
+        int getPF(char* buffer);
         void saveEntry(void);
 };
 
@@ -44,11 +46,11 @@ Measurement::~Measurement() {
 int Measurement::firstStamp(char* buffer) {
     int offset = 3;
     int datecode;
+    memset(&ts, 0, sizeof(tm));
     buffer += offset;
     while (offset <= 7) {
             datecode = static_cast<int>(*buffer);
             
-            //cout << " " << hex << static_cast<int>(*buffer);
             /*
             if (offset == 3) {
                 strcpy(timestamp, NumberToString(datecode[offset-3]).c_str());
@@ -73,8 +75,12 @@ int Measurement::firstStamp(char* buffer) {
             offset++;
          }
     t = mktime(&ts);
-    strftime(timestamp, N, "%Y-%m-%d %H:%M", &ts);
-    cout << timestamp;
+    if (strftime(timestamp, sizeof(timestamp)-1, "%Y-%m-%d %H:%M", &ts) > 0)
+        cout << timestamp;
+    else {
+        cerr << "strftime failed." <<endl;
+        return EXIT_FAILURE;
+    }
     getVoltage(buffer);
 
 
@@ -103,6 +109,15 @@ int Measurement::getCurrent(char* buffer) {
     }
     unsigned int curr = ( currcode[0] << 8 | currcode[1] );
     cout << " " << (float)curr/1000;
+    getPF(buffer);
+    return EXIT_SUCCESS;
+}
+
+int Measurement::getPF(char* buffer) {
+    unsigned int pf = 0;
+    pf = static_cast<int>(*buffer);
+    buffer++;
+    cout << " " << (float)pf/100;
     return EXIT_SUCCESS;
 }
 
