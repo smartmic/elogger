@@ -26,6 +26,7 @@ class Measurement {
         int getVoltage(void);
         int getCurrent(void);
         int getPF(void);
+        bool endCriteria(void);
         void saveEntry(void);
 };
 
@@ -37,12 +38,11 @@ Measurement::~Measurement() {
 
 int Measurement::firstStamp(void) {
     int offset = 3;
-    int datecode;
+    unsigned int datecode;
     memset(&ts, 0, sizeof(tm));
     buffer += offset;
     while (offset <= 7) {
-            datecode = static_cast<int>(*buffer);
-            
+            datecode = static_cast<unsigned int>(*buffer & 0xFF);
             switch (offset) {
                 case 3:
                     ts.tm_mon = datecode - 1;
@@ -83,13 +83,13 @@ int Measurement::getVoltage(void) {
     int i;
     unsigned int voltcode[2] = {0,0};
     for (i=0;i<=1;i++) {
-        voltcode[i] = static_cast<int>(*buffer);
+        voltcode[i] = static_cast<unsigned int>(*buffer & 0xFF);
         buffer++;
     }
     unsigned int volt = ( voltcode[0] << 8 | voltcode[1] );
     voltage = (float)volt/10;
 
-    if (voltage > 108.0 && voltage < 252.0) 
+    if (voltage > 108.0 && voltage < 300.0) 
         cout << "\t" << voltage; 
     else {
         cerr << "\ninvalid voltage at " << hex << &buffer << endl;
@@ -102,7 +102,7 @@ int Measurement::getCurrent(void) {
     int i;
     unsigned int currcode[2] = {0,0};
     for (i=0;i<=1;i++) {
-        currcode[i] = static_cast<int>(*buffer);
+        currcode[i] = static_cast<unsigned int>(*buffer & 0xFF);
         buffer++;
     }
     unsigned int curr = ( currcode[0] << 8 | currcode[1] );
@@ -119,7 +119,7 @@ int Measurement::getCurrent(void) {
 
 int Measurement::getPF(void) {
     unsigned int pf = 0;
-    pf = static_cast<int>(*buffer);
+    pf = static_cast<unsigned int>(*buffer & 0xFF);
     buffer++;
     cosphi = (float)pf/100;
     if (cosphi >= 0.0 && cosphi <= 1.0)
@@ -155,6 +155,21 @@ int Measurement::getBuffer(char* filename) {
     }
 }
 
+bool Measurement::endCriteria(void) {
+    char* preview = new char[4];
+    memcpy(preview, buffer, 4);
+    unsigned int checkcode[4] = {0,0,0,0};
+    for (int i=0;i<4;i++) {
+        checkcode[i] = static_cast<unsigned int>(*preview & 0xFF);
+        preview++;
+    }
+    unsigned int eof = (checkcode[0] << 24) | (checkcode[1] << 16) | (checkcode[2] << 8) | checkcode[3]; 
+    if (eof == 0xFFFFFFFF)
+        return true;
+    else
+        return false;
+}
+
 char* Measurement::buffer; 
 struct tm Measurement::ts;
 
@@ -163,19 +178,19 @@ int main(int argc, char* argv[]) {
     char* filename[sizeof(&argv[1])];
     *filename = argv[1];
     
+    bool finish = false;
     Measurement entry0;
     entry0.getBuffer(*filename);
     entry0.firstStamp();
 
-    int i = 0;
-    while (i < 20) {
+    while (finish == false) {
+        finish = entry0.endCriteria();
         entry0.getVoltage();
         entry0.getCurrent();
         entry0.getPF();
         cout << endl;
         entry0.addTimedelta(60);
         entry0.getTimestamp();
-        i++;
     }
 return 0;
 }
