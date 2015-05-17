@@ -76,7 +76,6 @@ int Measurement::getTimestamp(void) {
 int Measurement::addTimedelta(int deltasec) {
     time_t next = mktime(&ts) + deltasec;
     ts = *localtime(&next);
-    
     return 0;
 }
 
@@ -164,8 +163,6 @@ int main(int argc, char* argv[]) {
     char* filename[sizeof(&argv[1])];
     *filename = argv[1];
     
-    //char logfile[] = "file.log";
-        
     Measurement entry0;
     entry0.getBuffer(*filename);
     entry0.firstStamp();
@@ -175,11 +172,10 @@ int main(int argc, char* argv[]) {
         entry0.getVoltage();
         entry0.getCurrent();
         entry0.getPF();
-        cout << "\n";
+        cout << endl;
         entry0.addTimedelta(60);
         entry0.getTimestamp();
         i++;
     }
 return 0;
 }
-
