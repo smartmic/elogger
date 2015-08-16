@@ -141,7 +141,6 @@ int Measurement::getBuffer(char* filename) {
 
     inputfile.open(filename,ios::in | ios::binary | ios::ate);
     if (inputfile.good()) {
-        cout << "inputfile exists." << endl;
         size = inputfile.tellg();
         buffer = new char[size];
         inputfile.seekg (0, ios::beg);
@@ -178,19 +177,25 @@ int main(int argc, char* argv[]) {
     char* filename[sizeof(&argv[1])];
     *filename = argv[1];
     
+    bool start = true;
     bool finish = false;
     Measurement entry0;
     entry0.getBuffer(*filename);
-    entry0.firstStamp();
 
     while (finish == false) {
-        finish = entry0.endCriteria();
+        if (start == true) {
+            entry0.firstStamp();
+            start = false;
+        }
+        else {
+            entry0.getTimestamp();
+        }
         entry0.getVoltage();
         entry0.getCurrent();
         entry0.getPF();
         cout << endl;
         entry0.addTimedelta(60);
-        entry0.getTimestamp();
+        finish = entry0.endCriteria();
     }
 return 0;
 }
