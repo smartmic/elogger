@@ -1,52 +1,8 @@
-/** 
- *    elogger - conversion of VOLTCRAFTs ENERGY-LOGGER binary data logger files to human readable text
- *
- *    Copyright (C) 2014 - 2015  Martin Michel
- *
- *    This program is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
- *
- *    This program is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
- *
- *    You should have received a copy of the GNU General Public License
- *    along with this program.  If not, see <http://www.gnu.org/licenses/>./ elogger.cpp
- */
+#include "measurement.h"
 
-#include <fstream>
-#include <iostream>
-#include <cstring>
-#include <ctime>
-
-#define N 18
 
 using namespace std;
 
-class Measurement {
-    private:
-        static char* buffer;
-        static struct tm ts;
-        char timestamp[N];
-        float voltage;
-        float current;
-        float cosphi;
-    public:
-        Measurement();
-        ~Measurement();
-        int getBuffer(char* filename);
-        int firstStamp(void);
-        int getTimestamp(void);
-        int addTimedelta(int deltasec);
-        int getVoltage(void);
-        int getCurrent(void);
-        int getPF(void);
-        bool endCriteria(void);
-        void saveEntry(void);
-};
 
 Measurement::Measurement() {
 }
@@ -187,33 +143,4 @@ bool Measurement::endCriteria(void) {
         return false;
 }
 
-char* Measurement::buffer; 
-struct tm Measurement::ts;
 
-int main(int argc, char* argv[]) {
-    
-    char* filename[sizeof(&argv[1])];
-    *filename = argv[1];
-    
-    bool start = true;
-    bool finish = false;
-    Measurement entry0;
-    entry0.getBuffer(*filename);
-
-    while (finish == false) {
-        if (start == true) {
-            entry0.firstStamp();
-            start = false;
-        }
-        else {
-            entry0.getTimestamp();
-        }
-        entry0.getVoltage();
-        entry0.getCurrent();
-        entry0.getPF();
-        cout << endl;
-        entry0.addTimedelta(60);
-        finish = entry0.endCriteria();
-    }
-return 0;
-}

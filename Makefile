@@ -1,7 +1,11 @@
-all: elogger.o
-	g++ -O -o elogger elogger.o
+SHELL = /bin/sh
+OBJ = main.o measurement.o
+NAME = elogger
 
-.cpp.o:
+all: $(OBJ)
+	g++ -O -o $(NAME) $(OBJ) 
+
+%.o: src/%.cpp
 	g++ -c -Wall $<
 
 clean:
