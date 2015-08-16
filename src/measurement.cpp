@@ -1,8 +1,6 @@
 #include "measurement.h"
 
-
 using namespace std;
-
 
 Measurement::Measurement() {
 }
@@ -38,8 +36,8 @@ int Measurement::firstStamp(void) {
 }
 
 int Measurement::getTimestamp(void) {
-    if (strftime(timestamp, sizeof(timestamp)-1, "%Y-%m-%d %H:%M", &ts) > 0)
-        cout << timestamp;
+    if (strftime(timestamp, sizeof(timestamp)-1, "%Y-%m-%dT%H:%M", &ts) > 0)
+        cout << timestamp ;
     else {
         cerr << "strftime failed." <<endl;
         return 1;
@@ -64,7 +62,7 @@ int Measurement::getVoltage(void) {
     voltage = (float)volt/10;
 
     if (voltage > 108.0 && voltage < 300.0) 
-        cout << "\t" << voltage; 
+        cout << " " << voltage; 
     else {
         cerr << "\ninvalid voltage at " << hex << &buffer << endl;
         return 1;
@@ -83,7 +81,7 @@ int Measurement::getCurrent(void) {
     current = (float)curr/1000; 
     
     if (current >= 0.0)
-        cout << "\t" << current;
+        cout << " " << current;
     else {
         cerr << "\ninvalid current at " << hex << &buffer << endl;
         return 1;
@@ -97,7 +95,7 @@ int Measurement::getPF(void) {
     buffer++;
     cosphi = (float)pf/100;
     if (cosphi >= 0.0 && cosphi <= 1.0)
-        cout << "\t" << cosphi;
+        cout << " " << cosphi;
     else {
         cerr << "\ninvalid power factor at " << hex << &buffer << endl;
         return 1;
