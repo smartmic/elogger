@@ -24,8 +24,10 @@ $(distdir).tar.gz: $(distdir)
 
 $(distdir): FORCE
 	mkdir -p $(distdir)/src
+	mkdir -p $(distdir)/tests
 	cp Makefile $(distdir)
-	cp src/Makefile src/*.cpp src/*.h src/a0086944.txt src/A0086944.BIN $(distdir)/src
+	cp src/Makefile src/*.cpp src/*.h  $(distdir)/src
+	cp tests/a0086944.txt tests/A0086944.BIN $(distdir)/tests
 
 distcheck: $(distdir).tar.gz
 	gzip -cd $(distdir).tar.gz | tar xvf -

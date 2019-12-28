@@ -6,7 +6,7 @@ src/elogger: $(sources)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ $(sources)
 
 check: all
-	diff src/a0086944.txt <(./src/elogger src/A0086944.BIN)
+	diff tests/a0086944.txt <(./src/elogger tests/A0086944.BIN)
 	@echo "*** ALL TESTS PASSED ***"
 
 install:
