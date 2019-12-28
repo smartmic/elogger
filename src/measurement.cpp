@@ -140,7 +140,6 @@ int Measurement::getBuffer(char* filename) {
         return 0;
     }
     else {
-        cerr << "reading file failed." <<endl;
         return 1;
     }
 }
