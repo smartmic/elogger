@@ -1,10 +1,11 @@
-SHELL := /bin/bash
+SHELL = /bin/bash
+CPPFLAGS ?= -g -O0
 sources = main.cpp measurement.cpp
 
 all: elogger
 
 elogger: $(sources)
-	g++ -g -Og -o $@ $(sources)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ $(sources)
 
 check: all
 	diff a0086944.txt <(./elogger A0086944.BIN)
