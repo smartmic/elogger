@@ -1,4 +1,4 @@
-/** 
+/**
  *    elogger - conversion of VOLTCRAFTs ENERGY-LOGGER binary data logger files to human readable text
  *
  *    Copyright (C) 2014 - 2015  Martin Michel
@@ -22,7 +22,7 @@
 #include <cstring>
 #include <ctime>
 
-#define N 18
+#define N    18
 
 class Measurement {
 private:
@@ -33,7 +33,7 @@ private:
   float current;
   float cosphi;
 public:
-   Measurement();
+  Measurement();
   ~Measurement();
   int getBuffer(char *filename);
   int firstStamp(void);
