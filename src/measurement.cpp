@@ -17,6 +17,7 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>./ elogger.cpp
  */
 
+#include <array>
 #include "measurement.h"
 
 using namespace std;
@@ -27,31 +28,42 @@ Measurement::Measurement() {
 Measurement::~Measurement() {
 }
 
-int Measurement::firstStamp(void) {
-  int          offset = 3;
+int Measurement::firstStamp(void)
+{
+  unsigned int i;
+  array < unsigned int, 3 > startchar;
+  array < unsigned int, 3 > specdatastart {
+  224, 197, 234};
+
   unsigned int datecode;
 
   memset(&ts, 0, sizeof(tm));
-  buffer += offset;
 
-  while (offset <= 7) {
-    datecode = static_cast <unsigned int>(*buffer & 0xFF);
+  for (i = 0; i <= 2; ++i) {
+    startchar[i] = static_cast < unsigned int >(*buffer & 0xFF);
+//       cout << uppercase << hex << startchar[i] << " ";
+    buffer++;
+  }
+  // cout << endl;
+  if (startchar != specdatastart)
+    throw "Provided file is not compliant to specification!";
 
-    switch (offset) {
-    case 3:
-      ts.tm_mon = datecode - 1;
-    case 4:
-      ts.tm_mday = datecode;
-    case 5:
-      ts.tm_year = datecode - 1900 + 2000;
-    case 6:
-      ts.tm_hour = datecode;
-    case 7:
-      ts.tm_min = datecode;
+  for (i = 3; i <= 7; i++) {
+    datecode = static_cast < unsigned int >(*buffer & 0xFF);
+    switch (i) {
+      case 3:
+        ts.tm_mon = datecode - 1;
+      case 4:
+        ts.tm_mday = datecode;
+      case 5:
+        ts.tm_year = datecode - 1900 + 2000;
+      case 6:
+        ts.tm_hour = datecode;
+      case 7:
+        ts.tm_min = datecode;
     }
 
     buffer++;
-    offset++;
   }
 
   mktime(&ts);
