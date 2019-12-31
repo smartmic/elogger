@@ -29,48 +29,53 @@ Measurement::~Measurement() {
 }
 
 int Measurement::firstStamp(void) {
-  unsigned int            i;
-  array <unsigned int, 3> startchar;
-  array <unsigned int, 3> specdatastart {
-    224, 197, 234 };
-
+  int          i;
+  char        *preview      = new char[3];
+  unsigned int checkcode[3] = { 0, 0, 0 };
+  unsigned int speccode     = 0xE0C5EA;  // from DATA file spec
   unsigned int datecode;
 
-  memset(&ts, 0, sizeof(tm));
+  memcpy(preview, buffer, 3);
 
-  for (i = 0; i <= 2; ++i) {
-    startchar[i] = static_cast <unsigned int>(*buffer & 0xFF);
-//       cout << uppercase << hex << startchar[i] << " ";
-    buffer++;
+  for (i = 0; i < 3; i++) {
+    checkcode[i] = static_cast <unsigned int>(*preview & 0xFF);
+    preview++;
   }
 
-  // cout << endl;
-  if (startchar != specdatastart) {
+  unsigned int startcode =
+    (checkcode[0] << 16) | (checkcode[1] << 8) | checkcode[2];
+
+  if (startcode != speccode) {
     throw "Provided file is not compliant to specification!";
   }
+  else {
+    buffer += 3;  // offset considering start byte sequence EO C5 EA
 
-  for (i = 3; i <= 7; i++) {
-    datecode = static_cast <unsigned int>(*buffer & 0xFF);
+    memset(&ts, 0, sizeof(tm));
 
-    switch (i) {
-    case 3:
-      ts.tm_mon = datecode - 1;
-    case 4:
-      ts.tm_mday = datecode;
-    case 5:
-      ts.tm_year = datecode - 1900 + 2000;
-    case 6:
-      ts.tm_hour = datecode;
-    case 7:
-      ts.tm_min = datecode;
+    for (i = 3; i <= 7; i++) {
+      datecode = static_cast <unsigned int>(*buffer & 0xFF);
+
+      switch (i) {
+      case 3:
+        ts.tm_mon = datecode - 1;
+      case 4:
+        ts.tm_mday = datecode;
+      case 5:
+        ts.tm_year = datecode - 1900 + 2000;
+      case 6:
+        ts.tm_hour = datecode;
+      case 7:
+        ts.tm_min = datecode;
+      }
+
+      buffer++;
     }
 
-    buffer++;
+    mktime(&ts);
+    getTimestamp();
+    return(0);
   }
-
-  mktime(&ts);
-  getTimestamp();
-  return(0);
 }
 
 int Measurement::getTimestamp(void) {
