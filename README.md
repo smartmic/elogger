@@ -12,16 +12,21 @@ The underlying specification can be found at [Conrad](http://www2.produktinfo.co
 
 ## Usage
 
-Run ``make`` on a GNU/Linux system (*BSD etc. not yet tested) and you will get an executable named **elogger** in *src/*.
-To install it run ``make install`` as root and the executable will be installed in */usr/local/bin*. You can specify a different location with a prefix: ``make prefix=/usr install``.
+To build and install the program, run
 
-The invocation is simply:
+    ./configure
+    make
+    make install
+
+``make install`` requires root privileges if you wish to install it under the default installation path */usr/local*. See ``./configure --help`` for alternative configurations.
+
+Program invocation goes by simply calling:
 
     elogger <binfile>
 
 ## Status
 
-This is an very early version and needs some more functionality and documentation.
+This is a very early version and needs some more functionality and documentation. 
 
 ## Alternatives
 
