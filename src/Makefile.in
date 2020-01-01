@@ -12,7 +12,7 @@ exec_prefix = @exec_prefix@
 bindir = @bindir@
 
 SHELL = /bin/bash
-CPPFLAGS ?= -g -O0
+CPPFLAGS ?= -g -O0 -std=c++11
 sources = main.cpp measurement.cpp
 
 all: elogger
