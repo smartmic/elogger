@@ -17,7 +17,6 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>./ elogger.cpp
  */
 
-#include <array>
 #include "measurement.h"
 
 using namespace std;
