@@ -1,20 +1,18 @@
-package = elogger
-version = 0.1.0
-tarname = $(package)
+# @configure_input@
+
+# Package-specific substitution variables
+package = @PACKAGE_NAME@
+version = @PACKAGE_VERSION@
+tarname = @PACKAGE_TARNAME@
 distdir = $(tarname)-$(version)
 
-prefix=/usr/local
-exec_prefix = $(prefix)
-bindir = $(exec_prefix)/bin
+# Prefix-specific substitution variables
+prefix=@prefix@
+exec_prefix = @exec_prefix@
+bindir = @bindir@
 
-#export prefix
-#export exec_prefix
-#export bindir
-
-#all clean check install uninstall elogger:
-#	cd src && $(MAKE) $@
-
-all elogger: src/elogger
+all clean check install uninstall elogger:
+	cd src && $(MAKE) $@
 
 dist: $(distdir).tar.gz
 
@@ -25,12 +23,15 @@ $(distdir).tar.gz: $(distdir)
 $(distdir): FORCE
 	mkdir -p $(distdir)/src
 	mkdir -p $(distdir)/tests
-	cp Makefile $(distdir)
-	cp src/Makefile src/*.cpp src/*.h  $(distdir)/src
+	cp configure.ac $(distdir)
+	cp configure $(distdir)
+	cp Makefile.in $(distdir)
 	cp tests/a0086944.txt tests/A0086944.BIN $(distdir)/tests
+	cp src/Makefile.in src/*.cpp src/*.h $(distdir)/src
 
 distcheck: $(distdir).tar.gz
 	gzip -cd $(distdir).tar.gz | tar xvf -
+	cd $(distdir) && ./configure
 	cd $(distdir) && $(MAKE) all
 	cd $(distdir) && $(MAKE) check
 	cd $(distdir) && $(MAKE) DESTDIR=$${PWD}/_inst install
@@ -49,6 +50,10 @@ FORCE:
 	-rm $(distdir).tar.gz >/dev/null 2>&1
 	rm -rf $(distdir)
 
-include src/Makefile
+Makefile: Makefile.in config.status
+	./config.status $@
+
+config.status: configure
+	./config.status --recheck
 
 .PHONY: FORCE all clean check dist install uninstall
