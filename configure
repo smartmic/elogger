@@ -3275,6 +3275,7 @@ test -z "$INSTALL_SCRIPT" && INSTALL_SCRIPT='${INSTALL}'
 
 test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
 
+
 # Extract the first word of "diff", so it can be a program name with args.
 set dummy diff; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
@@ -3337,7 +3338,7 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_prog_wdiff_var" && ac_cv_prog_wdiff_var="diff_var"
+  test -z "$ac_cv_prog_wdiff_var" && ac_cv_prog_wdiff_var="diff"
 fi
 fi
 wdiff_var=$ac_cv_prog_wdiff_var
@@ -3350,6 +3351,7 @@ $as_echo "no" >&6; }
 fi
 
 
+diff_var=${wdiff_var}
 
 # Checks for libraries.
 
