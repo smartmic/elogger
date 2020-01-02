@@ -10,6 +10,7 @@ AC_CONFIG_HEADERS([config.h])
 AC_PROG_CXX
 AC_PROG_CC
 AC_PROG_INSTALL
+AC_CHECK_PROG([diff_check],[wdiff],[wdiff -3],[diff])
 
 # Checks for libraries.
 

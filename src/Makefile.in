@@ -20,8 +20,16 @@ SHELL = @SHELL@
 TZ = @TZ@ # necessary because test(s) use locale for strftime	\
 formatting and timestamps in test files use CET timezone
 
+# Tool-specific substitution variables
+CXX = @CXX@
+CXXFLAGS = @CXXFLAGS@
+CPPFLAGS = @CPPFLAGS@
+INSTALL  = @INSTALL@
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+diff_check = @diff_check@
 
-CPPFLAGS ?= -g -O0 -std=c++11
 sources = $(srcdir)/main.cpp $(srcdir)/measurement.cpp
 
 all: elogger
@@ -30,12 +38,12 @@ elogger: $(sources)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -I. -I$(srcdir) -I.. -o $@ $(sources)
 
 check: all
-	diff ../tests/a0086944.txt <(./elogger ../tests/A0086944.BIN)
+	$(diff_check) ../tests/a0086944.txt <(TZ=$(TZ) ./elogger ../tests/A0086944.BIN)
 	@echo "*** ALL TESTS PASSED ***"
 
 install:
-	install -d $(DESTDIR)$(bindir)
-	install -m 0755 elogger $(DESTDIR)$(bindir)
+	$(INSTALL) -d $(DESTDIR)$(bindir)
+	$(INSTALL) -m 0755 elogger $(DESTDIR)$(bindir)
 
 uninstall:
 	rm -f $(DESTDIR)$(bindir)/elogger
