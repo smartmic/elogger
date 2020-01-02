@@ -22,6 +22,9 @@ AC_CHECK_HEADER_STDBOOL
 AC_FUNC_MKTIME
 AC_CHECK_FUNCS([memset])
 
+AC_SUBST([SHELL], [/bin/bash])
+AC_SUBST([TZ], [CET])
+
 AC_CONFIG_FILES([Makefile
                  src/Makefile])
 AC_OUTPUT
