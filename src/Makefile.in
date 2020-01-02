@@ -28,6 +28,7 @@ INSTALL  = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
+diff_var = @diff_var@
 wdiff_var = @wdiff_var@
 
 sources = $(srcdir)/main.cpp $(srcdir)/measurement.cpp
