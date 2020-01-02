@@ -629,7 +629,8 @@ LIBOBJS
 EGREP
 GREP
 CPP
-diff_check
+wdiff_var
+diff_var
 INSTALL_DATA
 INSTALL_SCRIPT
 INSTALL_PROGRAM
@@ -3274,15 +3275,15 @@ test -z "$INSTALL_SCRIPT" && INSTALL_SCRIPT='${INSTALL}'
 
 test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
 
-# Extract the first word of "wdiff", so it can be a program name with args.
-set dummy wdiff; ac_word=$2
+# Extract the first word of "diff", so it can be a program name with args.
+set dummy diff; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
-if ${ac_cv_prog_diff_check+:} false; then :
+if ${ac_cv_prog_diff_var+:} false; then :
   $as_echo_n "(cached) " >&6
 else
-  if test -n "$diff_check"; then
-  ac_cv_prog_diff_check="$diff_check" # Let the user override the test.
+  if test -n "$diff_var"; then
+  ac_cv_prog_diff_var="$diff_var" # Let the user override the test.
 else
 as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
 for as_dir in $PATH
@@ -3291,7 +3292,7 @@ do
   test -z "$as_dir" && as_dir=.
     for ac_exec_ext in '' $ac_executable_extensions; do
   if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
-    ac_cv_prog_diff_check="wdiff -3"
+    ac_cv_prog_diff_var="diff"
     $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
     break 2
   fi
@@ -3299,13 +3300,50 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_prog_diff_check" && ac_cv_prog_diff_check="diff"
 fi
 fi
-diff_check=$ac_cv_prog_diff_check
-if test -n "$diff_check"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $diff_check" >&5
-$as_echo "$diff_check" >&6; }
+diff_var=$ac_cv_prog_diff_var
+if test -n "$diff_var"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $diff_var" >&5
+$as_echo "$diff_var" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+# Extract the first word of "wdiff", so it can be a program name with args.
+set dummy wdiff; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_prog_wdiff_var+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  if test -n "$wdiff_var"; then
+  ac_cv_prog_wdiff_var="$wdiff_var" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_prog_wdiff_var="wdiff -3"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_prog_wdiff_var" && ac_cv_prog_wdiff_var="diff_var"
+fi
+fi
+wdiff_var=$ac_cv_prog_wdiff_var
+if test -n "$wdiff_var"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $wdiff_var" >&5
+$as_echo "$wdiff_var" >&6; }
 else
   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; }
