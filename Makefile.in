@@ -11,6 +11,10 @@ prefix=@prefix@
 exec_prefix = @exec_prefix@
 bindir = @bindir@
 
+# VPATH-specific substitution variables
+srcdir = @srcdir@
+VPATH = @srcdir@
+
 all clean check install uninstall elogger:
 	cd src && $(MAKE) $@
 
@@ -23,11 +27,11 @@ $(distdir).tar.gz: $(distdir)
 $(distdir): FORCE
 	mkdir -p $(distdir)/src
 	mkdir -p $(distdir)/tests
-	cp configure.ac $(distdir)
-	cp configure $(distdir)
-	cp Makefile.in $(distdir)
+	cp $(srcdir)/configure.ac $(distdir)
+	cp $(srcdir)/configure $(distdir)
+	cp $(srcdir)/Makefile.in $(distdir)
 	cp tests/a0086944.txt tests/A0086944.BIN $(distdir)/tests
-	cp src/Makefile.in src/*.cpp src/*.h $(distdir)/src
+	cp $(srcdir)/src/Makefile.in $(srcdir)/src/*.cpp src/*.h $(distdir)/src
 
 distcheck: $(distdir).tar.gz
 	gzip -cd $(distdir).tar.gz | tar xvf -

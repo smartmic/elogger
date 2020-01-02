@@ -11,10 +11,14 @@ prefix = @prefix@
 exec_prefix = @exec_prefix@
 bindir = @bindir@
 
+# VPATH-specific substitution variables
+srcdir = @srcdir@
+VPATH = @srcdir@
+
 SHELL = /bin/bash
 TZ = CET	# necessary because test(s) use locale for strftime formatting
 CPPFLAGS ?= -g -O0 -std=c++11
-sources = main.cpp measurement.cpp
+sources = $(srcdir)/main.cpp $(srcdir)/measurement.cpp
 
 all: elogger
 
