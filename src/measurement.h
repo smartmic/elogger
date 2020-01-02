@@ -16,6 +16,8 @@
  *    You should have received a copy of the GNU General Public License
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>./ elogger.cpp
  */
+#ifndef MEASUREMENT_H
+#define MEASUREMENT_H
 
 #include <fstream>
 #include <iostream>
@@ -45,3 +47,5 @@ public:
   bool endCriteria(void);
   void saveEntry(void);
 };
+
+#endif /* MEASUREMENT_H */
