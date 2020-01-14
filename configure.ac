@@ -3,6 +3,7 @@
 
 AC_PREREQ([2.69])
 AC_INIT([elogger], [0.2.0], [dev@famic.de])
+AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([src/measurement.cpp])
 AC_CONFIG_HEADERS([config.h])
 
