@@ -12,7 +12,7 @@ want to use the proprietary Windows-based data visualization program
 as offered by the vendor but prefer free (libre) software where
 possible. In case of the Energy Logger 4000, it is possible!
 
-## Specification
+### Specification
 
 The underlying specification can be found at
 [Conrad](http://www2.produktinfo.conrad.com/datenblaetter/125000-149999/125323-da-01-en-Datenprotokoll_SD_card_file_Formatv1_2.pdf). Here
@@ -26,8 +26,8 @@ Go to the [Releases](https://github.com/smartmic/elogger/releases)
 page and download the latest tarball release (file ending
 ``.tar.gz``). You need to extract the tarball, build and install the
 program.  To do so, run these commands in the directory where you
-downloaded or saved the release (replace <major>, <minor> and
-<revision> with the corresponding version numbers of the downloaded
+downloaded or saved the release (replace ``<major>``, ``<minor>`` and
+``<revision>`` with the corresponding version numbers of the downloaded
 release):
 
 	tar xzf elogger-<major>.<minor>.<revision>.tar.gz
@@ -48,16 +48,26 @@ in the directory where the binary files transfered from the Energy
 Logger are stored.  The output will be given on *stdout*.  You can
 save it to a file using shell redirection:
 
-	elogger <binfile> > output.txt
+    elogger <binfile> > output.txt
 
 ### If you are a developer or maintainer
 This project uses the GNU Autotools build system.  Make sure you have
-``autoconf`` (version 2.69) and ``automake`` (version 1.16.1)
-installed on your development system.  Either clone this repository
-with ``git@github.com:smartmic/elogger.git`` or download the source
-code from the release page.  Run ``autoreconf -i`` to install the
-required utility scripts, then you can build the project as usual with
-``./configure && make``.
+``autoconf`` >= 2.69 and ``automake`` >= 1.16.1 installed on your 
+development system.  
+
+Either clone this repository with 
+	
+	git clone git@github.com:smartmic/elogger.git
+
+or download the source code from the release page.  Change into the 
+repository and run 
+
+	autoreconf -i 
+	
+to install the required scripts, then build the project as usual with
+
+	./configure
+	make
 
 Contributions are highly welcome!
 
