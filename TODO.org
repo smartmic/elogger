@@ -1,0 +1,17 @@
+* List of possible improvements and ideas
+
+*** Function
+- [ ] Run parser on large concatenated binary files (Energy Logger
+  splits readings from SD card to file chunks of 10244 bytes)
+- [ ] Parse information file
+- [ ] Calculate running, derived metrics (apart from only voltage, current, cos phi)
+
+*** Building
+- [ ] Add autotest
+
+*** Testing
+- [ ] Define and implement unit tests
+
+*** Convience
+- [ ] Add utility script for statistics
+- [ ] Add utility script for plotting
